@@ -22,7 +22,7 @@ def get_currency_rate(currency_from: str, currency_to: str):
 
 
 if __name__ == '__main__':
-    currency_from_list = ['USD', 'EUR', 'GBP', 'BTC']
+    currency_from_list = ['USD', 'EUR', 'GBP', 'CHF', 'BTC']
     body_email = ''
     for currency_from in currency_from_list[:]:
         currency_to = 'USD' if currency_from == 'BTC' else 'BRL'
