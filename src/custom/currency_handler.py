@@ -42,4 +42,4 @@ class CurrencyHandler:
         # print(json.dumps(resp_json, indent=4, ensure_ascii=False))
 
     def get_desc(self):
-        return f'{self.__currency_from}-{self.__currency_to} > {self.__currency_value}'
+        return f'{self.__currency_from}-{self.__currency_to} > {self.__currency_value} ({self.__currency_name})'
