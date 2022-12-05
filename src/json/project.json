@@ -1,0 +1,24 @@
+{
+    "currency_list": [
+        {
+            "from": "USD",
+            "to": "BRL"
+        },
+        {
+            "from": "EUR",
+            "to": "BRL"
+        },
+        {
+            "from": "GBP",
+            "to": "BRL"
+        },
+        {
+            "from": "CHF",
+            "to": "BRL"
+        },
+        {
+            "from": "BTC",
+            "to": "USD"
+        }
+    ]
+}

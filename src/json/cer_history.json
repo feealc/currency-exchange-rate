@@ -1,0 +1,54 @@
+{
+    "history": [
+        {
+            "date": "20221121",
+            "info": [
+                {
+                    "name": "USD-BRL",
+                    "value": 5.311
+                },
+                {
+                    "name": "EUR-BRL",
+                    "value": 5.4385
+                },
+                {
+                    "name": "GBP-BRL",
+                    "value": 6.2722
+                },
+                {
+                    "name": "CHF-BRL",
+                    "value": 5.5347
+                },
+                {
+                    "name": "BTC-USD",
+                    "value": 15.809
+                }
+            ]
+        },
+        {
+            "date": "20221122",
+            "info": [
+                {
+                    "name": "USD-BRL",
+                    "value": 5.3709
+                },
+                {
+                    "name": "EUR-BRL",
+                    "value": 5.546
+                },
+                {
+                    "name": "GBP-BRL",
+                    "value": 6.3912
+                },
+                {
+                    "name": "CHF-BRL",
+                    "value": 5.5347
+                },
+                {
+                    "name": "BTC-USD",
+                    "value": 16.642
+                }
+            ]
+        }
+    ]
+}

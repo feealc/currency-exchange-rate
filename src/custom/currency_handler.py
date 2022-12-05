@@ -43,3 +43,9 @@ class CurrencyHandler:
 
     def get_desc(self):
         return f'{self.__currency_from}-{self.__currency_to} > {self.__currency_value} ({self.__currency_name})'
+
+    def to_dict(self) -> dict:
+        return {'name': f'{self.cur_from}-{self.cur_to}', 'value': self.bid}
+
+    def to_tuple(self) -> tuple:
+        return f'{self.cur_from}-{self.cur_to}', float(self.bid)
