@@ -3,6 +3,7 @@ import datetime
 from token_gmail import TOKEN_GMAIL
 from custom.currency_handler import CurrencyHandler
 from custom.gmail_handler import GmailHandler
+from database.cer_db import CERDb
 
 
 def get_currency_rate(currency_from: str, currency_to: str):
@@ -22,15 +23,25 @@ def get_currency_rate(currency_from: str, currency_to: str):
 
 
 if __name__ == '__main__':
+    db = CERDb()
+    db.prepare()
+    # db.list_all_tables(debug=True)
+    # db.delete_all()
+
+    today = int(datetime.datetime.now().strftime('%Y%m%d'))
+
     currency_from_list = ['USD', 'EUR', 'GBP', 'CHF', 'BTC']
     body_email = ''
     for currency_from in currency_from_list[:]:
         currency_to = 'USD' if currency_from == 'BTC' else 'BRL'
         # print(currency_from + '-' + currency_to)
         cur = get_currency_rate(currency_from=currency_from, currency_to=currency_to)
+        db.insert_currency(date=today, name=cur.name_formatted, full_name=cur.name, value=cur.bid_float)
         print(cur)
         body_email += f'<b>{cur.name} ({cur.cur_from}-{cur.cur_to})</b><br>{cur.bid}<br><br>'
     body_email += '<br>' + '<b>Gerado em:</b>' + '<br>' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # db.select_all(debug=True)
 
     gmail = GmailHandler(email_owner='fernandobalcantara@gmail.com', password=TOKEN_GMAIL)
     now = datetime.datetime.now()

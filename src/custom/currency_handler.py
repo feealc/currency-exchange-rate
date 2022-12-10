@@ -17,8 +17,16 @@ class CurrencyHandler:
         return self.__currency_name
 
     @property
+    def name_formatted(self):
+        return f'{self.__currency_from}-{self.__currency_to}'
+
+    @property
     def bid(self):
         return self.__currency_value
+
+    @property
+    def bid_float(self):
+        return float(self.__currency_value)
 
     @property
     def cur_from(self):
