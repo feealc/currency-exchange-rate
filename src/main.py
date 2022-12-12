@@ -3,6 +3,7 @@ import datetime
 from token_gmail import TOKEN_GMAIL
 from custom.currency_handler import CurrencyHandler
 from custom.gmail_handler import GmailHandler
+from custom.json_handler import *
 from database.cer_db import CERDb
 
 
@@ -23,6 +24,7 @@ def get_currency_rate(currency_from: str, currency_to: str):
 
 
 if __name__ == '__main__':
+    obj = HandlerJsonProject()
     db = CERDb()
     db.prepare()
     # db.list_all_tables(debug=True)
@@ -30,10 +32,10 @@ if __name__ == '__main__':
 
     today = int(datetime.datetime.now().strftime('%Y%m%d'))
 
-    currency_from_list = ['USD', 'EUR', 'GBP', 'CHF', 'BTC']
     body_email = ''
-    for currency_from in currency_from_list[:]:
-        currency_to = 'USD' if currency_from == 'BTC' else 'BRL'
+    for i in obj.get_currency_list():
+        currency_from = i.get('from')
+        currency_to = i.get('to')
         # print(currency_from + '-' + currency_to)
         cur = get_currency_rate(currency_from=currency_from, currency_to=currency_to)
         db.insert_currency(date=today, name=cur.name_formatted, full_name=cur.name, value=cur.bid_float)
