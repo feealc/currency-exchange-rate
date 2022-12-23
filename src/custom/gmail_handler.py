@@ -1,6 +1,7 @@
 import smtplib
 import email.message
 import traceback
+from logger.logger import logger
 
 
 class GmailHandler:
@@ -32,6 +33,7 @@ class GmailHandler:
             self.__email_to.append(self.__email)
         else:
             if email_to is None:
+                logger.critical('Destinatário não informado')
                 raise Exception('Email to is none')
             self.__email_to.append(email_to)
 
@@ -55,7 +57,7 @@ class GmailHandler:
             self.__server.sendmail(self.__email, self.get_to(), self.__msg.as_string().encode('utf-8'))
             # self.__server.sendmail('', '', self.__msg.as_string().encode('utf-8'))
             # smtplib.SMTPRecipientsRefused
-            print('Email enviado')
-        except:
-            print('Erro ao enviar email')
-            print(traceback.format_exc())
+            logger.info('E-mail enviado com sucesso!')
+        except Exception as e:
+            logger.critical('Erro ao enviar email')
+            logger.exception(e)
