@@ -134,3 +134,4 @@ dmypy.json
 # Custom
 src/token_gmail.py
 *.db
+log/*.log

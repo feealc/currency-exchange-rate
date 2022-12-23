@@ -1,10 +1,12 @@
 import requests
 import datetime
+import logging
 from token_gmail import TOKEN_GMAIL
 from custom.currency_handler import CurrencyHandler
 from custom.gmail_handler import GmailHandler
 from custom.json_handler import *
 from database.cer_db import CERDb
+from logger.logger import logger
 
 
 def get_currency_rate(currency_from: str, currency_to: str):
@@ -24,6 +26,9 @@ def get_currency_rate(currency_from: str, currency_to: str):
 
 
 if __name__ == '__main__':
+    logger.setLevel(logging.DEBUG)
+    logger.info('### Início')
+
     obj = HandlerJsonProject()
     db = CERDb()
     db.prepare()
@@ -36,10 +41,21 @@ if __name__ == '__main__':
     for i in obj.get_currency_list():
         currency_from = i.get('from')
         currency_to = i.get('to')
-        # print(currency_from + '-' + currency_to)
-        cur = get_currency_rate(currency_from=currency_from, currency_to=currency_to)
-        db.insert_currency(date=today, name=cur.name_formatted, full_name=cur.name, value=cur.bid_float)
-        print(cur)
+
+        cur = None
+        try:
+            logger.info(f'Realizando consulta da cotação da moeda {currency_from}-{currency_to}')
+            cur = get_currency_rate(currency_from=currency_from, currency_to=currency_to)
+            logger.debug(f'Resultado da consulta: {cur}')
+        except Exception as e:
+            logger.exception(e)
+
+        try:
+            logger.debug(f'Inserindo cotação no banco de dados')
+            db.insert_currency(date=today, name=cur.name_formatted, full_name=cur.name, value=cur.bid_float)
+        except Exception as e:
+            logger.exception(e)
+
         body_email += f'<b>{cur.name} ({cur.cur_from}-{cur.cur_to})</b><br>{cur.bid}<br><br>'
     body_email += '<br>' + '<b>Gerado em:</b>' + '<br>' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -51,3 +67,5 @@ if __name__ == '__main__':
     gmail.set_to(same_as_owner=True)
     gmail.set_body(body_email)
     gmail.send()
+
+    logger.info('### Fim')
