@@ -5,10 +5,11 @@ from logger.logger import logger
 
 
 class GmailHandler:
-    def __init__(self, email_owner: str, password: str):
+    def __init__(self, email_owner: str, password: str, flag_send: bool):
         self.__email = email_owner
         self.__password = password
         self.__email_to: list[str] = []
+        self.__flag_send = flag_send
 
         self.__msg: email.message.Message = email.message.Message()
         self.__server: smtplib.SMTP = smtplib.SMTP('smtp.gmail.com: 587')
@@ -47,17 +48,20 @@ class GmailHandler:
         self.__msg.set_payload(email_body)
 
     def send(self, debug=False):
-        if debug:
-            print('send()')
-            print(f'subject [{self.__msg["Subject"]}]')
-            print(f'from [{self.__msg["From"]}]')
-            print(f'to [{self.__msg["To"]}] {self.get_to()}')
-            print(f'body [{self.__msg.get_payload()}]')
-        try:
-            self.__server.sendmail(self.__email, self.get_to(), self.__msg.as_string().encode('utf-8'))
-            # self.__server.sendmail('', '', self.__msg.as_string().encode('utf-8'))
-            # smtplib.SMTPRecipientsRefused
-            logger.info('E-mail enviado com sucesso!')
-        except Exception as e:
-            logger.critical('Erro ao enviar email')
-            logger.exception(e)
+        if not self.__flag_send:
+            if debug:
+                print('send()')
+                print(f'subject [{self.__msg["Subject"]}]')
+                print(f'from [{self.__msg["From"]}]')
+                print(f'to [{self.__msg["To"]}] {self.get_to()}')
+                print(f'body [{self.__msg.get_payload()}]')
+            try:
+                self.__server.sendmail(self.__email, self.get_to(), self.__msg.as_string().encode('utf-8'))
+                # self.__server.sendmail('', '', self.__msg.as_string().encode('utf-8'))
+                # smtplib.SMTPRecipientsRefused
+                logger.info('E-mail enviado com sucesso!')
+            except Exception as e:
+                logger.critical('Erro ao enviar email')
+                logger.exception(e)
+        else:
+            logger.info('E-mail não será enviado')
