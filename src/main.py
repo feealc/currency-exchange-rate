@@ -1,5 +1,6 @@
-import requests
+import argparse
 import datetime
+import requests
 import logging
 from token_gmail import TOKEN_GMAIL
 from custom.currency_handler import CurrencyHandler
@@ -26,6 +27,10 @@ def get_currency_rate(currency_from: str, currency_to: str):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-e', '--email', action='store_true', help='Não realizar envio do e-mail com os resultados')
+    args = parser.parse_args()
+
     logger.setLevel(logging.DEBUG)
     logger.info('### Início')
 
@@ -61,7 +66,7 @@ if __name__ == '__main__':
 
     # db.select_all(debug=True)
 
-    gmail = GmailHandler(email_owner='fernandobalcantara@gmail.com', password=TOKEN_GMAIL)
+    gmail = GmailHandler(email_owner='fernandobalcantara@gmail.com', password=TOKEN_GMAIL, flag_send=args.email)
     now = datetime.datetime.now()
     gmail.set_subject(f'Valores cotação moedas para {now.strftime("%Y-%m-%d")}')
     gmail.set_to(same_as_owner=True)
